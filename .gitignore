@@ -1,0 +1,12 @@
+# .NET
+**/bin/
+**/obj/
+*.user
+
+# Secrets 
+.env
+appsettings.Production.json
+appsettings.*.local.json
+
+# Keep example files
+!.env.example
