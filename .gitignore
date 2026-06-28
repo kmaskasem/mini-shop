@@ -10,3 +10,5 @@ appsettings.*.local.json
 
 # Keep example files
 !.env.example
+
+tree-structure.js
