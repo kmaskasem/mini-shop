@@ -20,7 +20,7 @@ public class JwtService : IJwtService
     public string GenerateToken(User user)
     {
         var tokenHandler = new JwtSecurityTokenHandler();
-        var key = Encoding.ASCII.GetBytes(_config["Jwt:Key"]); // ค่า Key เก็บใน appsettings.json
+        var key = Encoding.ASCII.GetBytes(_config["Jwt:Secret"]); // ค่า Key เก็บใน appsettings.json
         
         var tokenDescriptor = new SecurityTokenDescriptor
         {
