@@ -2,6 +2,7 @@ using MiniShop.Auth.API.Extensions;
 using MiniShop.Auth.Infrastructure.Services;
 using MiniShop.Auth.Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
+using Scalar.AspNetCore;
 
 var builder = WebApplication.CreateBuilder(args);
 // 1. เพิ่มบริการต่างๆ เข้าไป (Dependency Injection)
@@ -10,7 +11,8 @@ builder.Services.AddEndpointsApiExplorer();
 // Add services to the container.
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
-builder.Services.AddApplicationServices();
+// builder.Services.AddApplicationServices();
+builder.Services.AddApplicationServices(builder.Configuration);
 // 2. เชื่อมต่อ DB (ดึง Connection String จาก appsettings.json)
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 builder.Services.AddDbContext<AppDbContext>(options =>
@@ -43,7 +45,12 @@ using (var scope = app.Services.CreateScope())
 if (app.Environment.IsDevelopment())
 {
     app.MapOpenApi();
+    app.MapScalarApiReference();
 }
+
+// ต้องมีบรรทัดนี้ก่อน app.MapControllers()
+app.UseAuthentication();  // ตรวจ JWT token
+app.UseAuthorization();   // ตรวจ role/policy
 
 // app.UseHttpsRedirection();
 // บอกให้ระบบไปดู Controller ที่เราสร้างไว้ในโฟลเดอร์ Controllers
