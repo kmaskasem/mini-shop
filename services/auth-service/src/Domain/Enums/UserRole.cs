@@ -1,6 +1,7 @@
 namespace MiniShop.Auth.Domain.Enums;
 public enum UserRole
 {
-    Admin = 0,
-    Staff = 1
+    Master = 0,
+    Admin = 1,
+    Staff = 2
 }

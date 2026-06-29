@@ -24,12 +24,12 @@ using (var scope = app.Services.CreateScope())
     try
     {
         var context = services.GetRequiredService<AppDbContext>();
-
+        var configuration = services.GetRequiredService<IConfiguration>();
         // 2. สั่ง Migrate ฐานข้อมูลให้เป็นเวอร์ชันล่าสุดโดยอัตโนมัติ
         context.Database.Migrate();
 
         // 3. เรียกใช้ Seeder ของเรา
-        SeedData.Initialize(context);
+        SeedData.Initialize(context, configuration);
     }
     catch (Exception ex)
     {

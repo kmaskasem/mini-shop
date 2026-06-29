@@ -65,6 +65,8 @@ services:                                                                       
     environment:
       - ConnectionStrings__DefaultConnection=Host=postgres-db;Database=${POSTGRES_DB};Username=${POSTGRES_USER};Password=${POSTGRES_PASSWORD}
       - Jwt__Secret=${JWT_SECRET}
+      - Seed__MasterUsername=${SEED_MASTER_USERNAME}
+      - Seed__MasterPassword=${SEED_MASTER_PASSWORD}
     ports:
       - "5000:8080"
     depends_on:

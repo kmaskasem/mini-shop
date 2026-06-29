@@ -2,27 +2,33 @@ using MiniShop.Auth.Domain.Entities;
 using MiniShop.Auth.Domain.Enums;
 using MiniShop.Auth.Infrastructure.Persistence;
 using MiniShop.Auth.Infrastructure.Security;
+using Microsoft.Extensions.Configuration;
 
 namespace MiniShop.Auth.Infrastructure.Services;
+
 public static class SeedData
 {
-    public static void Initialize(AppDbContext context)
+    public static void Initialize(AppDbContext context, IConfiguration configuration)
     {
         var passwordHasher = new BcryptPasswordHasher();
-        var admin = context.Users.SingleOrDefault(u => u.Username == "admintt");
+        var masterUsername = configuration["Seed:MasterUsername"] ?? throw new InvalidOperationException("Seed:MasterUsername is required");
+        var masterPassword = configuration["Seed:MasterPassword"] ?? throw new InvalidOperationException("Seed:MasterPassword is required");
 
-        if (admin == null)
+        var master = context.Users.SingleOrDefault(u => u.Username == masterUsername);
+
+        if (master == null)
         {
-            admin = new User
+            master = new User
             {
                 Id = Guid.NewGuid(),
-                Username = "admintt",
-                Role = UserRole.Admin
+                Username = masterUsername,
+                Role = UserRole.Master
             };
-            context.Users.Add(admin);
+            context.Users.Add(master);
         }
 
-        admin.PasswordHash = passwordHasher.Hash("1234");
+        master.PasswordHash = passwordHasher
+        .Hash(masterPassword);
         context.SaveChanges();
     }
 }
