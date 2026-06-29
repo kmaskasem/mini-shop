@@ -59,9 +59,16 @@ services:                                                                       
       - "8888:8081"
 
   auth-service:
+    build:
+        context: ../services/auth-service      # path จาก docker-compose.yml ไปหา service
+        dockerfile: docker/Dockerfile
     environment:
-      - ConnectionStrings__DefaultConnection=Host=localhost;Database=${POSTGRES_DB};Username=${POSTGRES_USER};Password=${POSTGRES_PASSWORD}
+      - ConnectionStrings__DefaultConnection=Host=postgres-db;Database=${POSTGRES_DB};Username=${POSTGRES_USER};Password=${POSTGRES_PASSWORD}
       - Jwt__Secret=${JWT_SECRET}
+    ports:
+      - "5000:8080"
+    depends_on:
+      - postgres-db
 
 # ประกาศที่เก็บข้อมูลรวม (Persistent Volume) ป้องกันข้อมูลหาย
 volumes:
